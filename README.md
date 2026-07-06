@@ -37,4 +37,5 @@ input is checked on the server, bad requests come back as a 400.
 
 ## deployed
 
-api link goes here once it's on render.
+- api: https://campuses-server-10a1.onrender.com
+- frontend: https://campuses-client-nu.vercel.app

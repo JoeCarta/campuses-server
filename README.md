@@ -1,20 +1,40 @@
 # campuses & students — server
 
-backend for the campuses & students crud app. csci 39548 final project.
+backend api for our campuses & students app (csci 39548 final project).
+express + prisma + postgres.
 
-## stack (planned)
+a campus has many students, and a student is either at one campus or none.
+deleting a campus doesn't delete its students, they just become unenrolled.
+
+## stack
 
 - node + express
-- prisma orm
-- postgresql (neon)
+- prisma
+- postgres (neon in prod)
 
-## running locally
+## running it
+
+you need a postgres database. so, have that locallyu installed beforehand. put its connection string in a .env as
+DATABASE_URL, then:
 
 ```bash
 npm install
+npx prisma migrate deploy
+npm run seed
 npm run dev
 ```
 
-## deployed url
+runs on http://localhost:3000.
 
-tbd (render)
+## routes
+
+campuses and students both have the usual crud:
+
+- GET/POST `/campuses`, GET/PUT/DELETE `/campuses/:id`
+- GET/POST `/students`, GET/PUT/DELETE `/students/:id`
+
+input is checked on the server, bad requests come back as a 400.
+
+## deployed
+
+api link goes here once it's on render.

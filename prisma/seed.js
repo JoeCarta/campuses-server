@@ -1,5 +1,10 @@
 import { prisma } from '../src/prisma.js'
-import { DEFAULT_CAMPUS_IMAGE, DEFAULT_STUDENT_IMAGE } from '../src/constants.js'
+
+// name-based images so seeded records look distinct and intentional (on-brand violet).
+const campusBanner = (name) =>
+  `https://placehold.co/600x400/7c3aed/ffffff?text=${encodeURIComponent(name)}&font=montserrat`
+const studentAvatar = (first, last) =>
+  `https://ui-avatars.com/api/?name=${encodeURIComponent(`${first} ${last}`)}&background=7c3aed&color=fff&size=400&bold=true`
 
 // wipe + repopulate so the deployed app isn't empty
 async function main() {
@@ -12,7 +17,7 @@ async function main() {
       name: 'Hunter College',
       address: '695 Park Ave, New York, NY 10065',
       description: 'a senior college of the city university of new york.',
-      imageUrl: DEFAULT_CAMPUS_IMAGE,
+      imageUrl: campusBanner('Hunter College'),
     },
   })
 
@@ -21,7 +26,7 @@ async function main() {
       name: 'Brooklyn College',
       address: '2900 Bedford Ave, Brooklyn, NY 11210',
       description: 'cuny campus in flatbush, brooklyn.',
-      imageUrl: DEFAULT_CAMPUS_IMAGE,
+      imageUrl: campusBanner('Brooklyn College'),
     },
   })
 
@@ -30,22 +35,24 @@ async function main() {
       name: 'City College',
       address: '160 Convent Ave, New York, NY 10031',
       description: 'the founding campus of cuny, in harlem.',
-      imageUrl: DEFAULT_CAMPUS_IMAGE,
+      imageUrl: campusBanner('City College'),
     },
   })
 
   await prisma.student.createMany({
     data: [
-      { firstName: 'Ada', lastName: 'Lovelace', email: 'ada@example.com', gpa: 3.9, imageUrl: DEFAULT_STUDENT_IMAGE, campusId: hunter.id },
-      { firstName: 'Alan', lastName: 'Turing', email: 'alan@example.com', gpa: 4.0, imageUrl: DEFAULT_STUDENT_IMAGE, campusId: hunter.id },
-      { firstName: 'Grace', lastName: 'Hopper', email: 'grace@example.com', gpa: 3.8, imageUrl: DEFAULT_STUDENT_IMAGE, campusId: brooklyn.id },
-      { firstName: 'Katherine', lastName: 'Johnson', email: 'katherine@example.com', gpa: 3.95, imageUrl: DEFAULT_STUDENT_IMAGE, campusId: city.id },
+      { firstName: 'Ada', lastName: 'Lovelace', email: 'ada@example.com', gpa: 3.9, imageUrl: studentAvatar('Ada', 'Lovelace'), campusId: hunter.id },
+      { firstName: 'Alan', lastName: 'Turing', email: 'alan@example.com', gpa: 4.0, imageUrl: studentAvatar('Alan', 'Turing'), campusId: hunter.id },
+      { firstName: 'Grace', lastName: 'Hopper', email: 'grace@example.com', gpa: 3.8, imageUrl: studentAvatar('Grace', 'Hopper'), campusId: brooklyn.id },
+      { firstName: 'Katherine', lastName: 'Johnson', email: 'katherine@example.com', gpa: 3.95, imageUrl: studentAvatar('Katherine', 'Johnson'), campusId: city.id },
+      { firstName: 'Noam', lastName: 'Chomsky', email: 'noam@example.com', gpa: 3.7, imageUrl: studentAvatar('Noam', 'Chomsky'), campusId: hunter.id },
+      { firstName: 'Leibniz', lastName: '(the other derivative guy)', email: 'leibniz@example.com', gpa: 4.0, imageUrl: studentAvatar('Gottfried', 'Leibniz'), campusId: brooklyn.id },
       // one unenrolled student so the "not enrolled" path has data
-      { firstName: 'Linus', lastName: 'Torvalds', email: 'linus@example.com', gpa: 3.5, imageUrl: DEFAULT_STUDENT_IMAGE, campusId: null },
+      { firstName: 'Linus', lastName: 'Torvalds', email: 'linus@example.com', gpa: 3.5, imageUrl: studentAvatar('Linus', 'Torvalds'), campusId: null },
     ],
   })
 
-  console.log('seeded 3 campuses + 5 students')
+  console.log('seeded 3 campuses + 7 students')
 }
 
 main()
